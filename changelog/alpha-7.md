@@ -59,9 +59,6 @@ breaking: yes
 - [debug-draw] retained sets of an ended game drawn by the next game in the same process
 - [stream] an asset of a type the table no longer streams stuck as a failed type
 - [service] an idle project worker kept ~3 cores busy (storage task loops spun on a reserve with no queued task)
-- [profiling] trace ring dropped events while a process loaded or ran without frames (drained now by a pump after 100 ms with no frame mark)
-- [profiling] preset `profiling` scene `hooks_10k` did not compile with the current language
-- [profiling] scripts compiled for a Profile chain were refused against the Rust declarations (trace flag lost in the registry)
 ## internal
 - [crates] engine split into leaf crates (all <= 10k lines): lang (syntax, check, codegen, compile, ir, cache, install, runtime, api), asset base (hub, ledger, converter, archive), game (config, stream, hosted), input devices, glb document and sidecar
 - [build] one `tests/all` binary per crate, measures in a `measure` target, rust-lld for the engine workspace, profile `measure`
