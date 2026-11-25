@@ -2,8 +2,8 @@
 version: alpha-7
 prev: alpha-6
 date: 2026-11-25
-commit: ea5eda8fd5cd0ed5dd93b39b31b06e62928295f4
-range: df373d2..ea5eda8
+commit: 1b1f179c737bc485db5f58542be1fed404e46f8f
+range: df373d2..1b1f179
 breaking: yes
 ---
 ## breaking
@@ -20,8 +20,8 @@ breaking: yes
 - [release] `uninstall.ps1`: stops the version's services, drops its Run value, `engines/<v>` and its folder; the last version takes the launcher and its PATH entry
 - [chain] `storuk chain diff <c> [<other>]` (states `own`, `inherited`, `hidden`, `behind`, `conflict`); `storuk chain pull <c>` (parent-only files taken, texts both changed merged by lines, binary or overlapping conflicts refuse the whole pull)
 - [chain] hides: `chains/<c>/hidden` glob lines (`**`, `*`, `?`), `storuk asset hide|unhide <chain> <line>`; a glob also hides what a later pull brings; merge deletes hidden files at main or carries the lines to a chain parent
-- [profiling] engine kind `profile`: `storuk run --engine profile`, `--trace <key=value>` (repeated) over project `[trace]` (`sinks` = `tracy`,`ring`; `categories`, `ondemand`, `memory`, `frame_image`, `hitch_ms`, `alloc_stack`, `run`, `client`); Release engine has no bus
-- [profiling] one trace bus to Tracy 0.14.1 (loopback only) and an in-process ring: zones of systems, hooks, observers, `par for` batches, tasks, script functions by name, Swiftwing stages, physics, anim, UI stages, render passes (CPU and GPU), threads, locks, memory pools, plots with units, frame images
+- [profiling] engine kind `profile`: `storuk run --engine profile`, `--trace <key=value>` (repeated) over project `[trace]` (`sinks` = `tracy`,`ring`; `categories`, `memory`, `frame_image`, `hitch_ms`, `alloc_stack`, `run`, `client`); Release engine has no bus
+- [profiling] one trace bus to Tracy 0.14.1 (loopback only, client on demand: nothing queued until a viewer connects) and an in-process ring: zones of systems, hooks, observers, `par for` batches, tasks, script functions by name, Swiftwing stages, physics, anim, UI stages, render passes (CPU and GPU), threads, locks, memory pools, plots with units, frame images
 - [profiling] `storuk trace view [<file>]`, `storuk trace capture [--client <name>] [--keep <n>] [--hitches-only] <seconds>|<frames>f <file>`, `storuk trace export [--summary] <file>` (`.zones.csv`, `.plots.csv`, `.messages.csv`, `.summary.csv`)
 - [script] trace constructs `zone "name"[, value[, "text"]]:`, `trace_plot("name", n[, unit])`, `trace_message("text"[, n])`; compiled to nothing outside a Profile build
 - [rust] `storuk::trace`: `zone!`, `name!`, `plot!`, `message!`, `Zone`, `Burst`, pools, `name_thread`, `spawn`, ring readers (`storuk::trace::ring`)
@@ -58,6 +58,10 @@ breaking: yes
 - [physics] a world paused at start makes every body on the first step, whatever frame each collider arrived in
 - [debug-draw] retained sets of an ended game drawn by the next game in the same process
 - [stream] an asset of a type the table no longer streams stuck as a failed type
+- [service] an idle project worker kept ~3 cores busy (storage task loops spun on a reserve with no queued task)
+- [profiling] trace ring dropped events while a process loaded or ran without frames (drained now by a pump after 100 ms with no frame mark)
+- [profiling] preset `profiling` scene `hooks_10k` did not compile with the current language
+- [profiling] scripts compiled for a Profile chain were refused against the Rust declarations (trace flag lost in the registry)
 ## internal
 - [crates] engine split into leaf crates (all <= 10k lines): lang (syntax, check, codegen, compile, ir, cache, install, runtime, api), asset base (hub, ledger, converter, archive), game (config, stream, hosted), input devices, glb document and sidecar
 - [build] one `tests/all` binary per crate, measures in a `measure` target, rust-lld for the engine workspace, profile `measure`
